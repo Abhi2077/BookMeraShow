@@ -28,21 +28,12 @@ public class BookingService {
      public void bookUserSeats(int noOfSeatsToBeBooked, int theatreId) {
           Show show = showRepo.getById(theatreId);
           if (show.getSeatsAvailable() >= noOfSeatsToBeBooked) {
-               // check status of seat (book)
-               // int newAvailableNoOfSeats = show.getSeatsAvailable() - noOfSeatsToBeBooked;
-               // int newTotalBookedSeats = show.getSeatsBooked() + noOfSeatsToBeBooked;
-               // System.out.print("seats are : " + newTotalBookedSeats);
-               // showRepo.updateNoOfSeatsAvailableById(newAvailableNoOfSeats, theatreId);
-               // showRepo.updateNoOfBookedSeatsById(newTotalBookedSeats, theatreId);
-
-               // Booking booking = new Booking();
-               // booking.setSeatId(show.getShowId());
-               // booking.setCreatedAt(new Date());
-               // booking.setSeatStatus("locked");
-               // booking.setNumberOfSeatsBookedByUser(noOfSeatsToBeBooked);
-
-               // System.out.println("this booking element " + booking);
-               // bookingRepo.save(booking);
+               
+               int newAvailableNoOfSeats = show.getSeatsAvailable() - noOfSeatsToBeBooked;
+               int newTotalBookedSeats = show.getSeatsBooked() + noOfSeatsToBeBooked;
+               System.out.print("seats are : " + newTotalBookedSeats);
+               showRepo.updateNoOfSeatsAvailableById(newAvailableNoOfSeats, theatreId);
+               showRepo.updateNoOfBookedSeatsById(newTotalBookedSeats, theatreId);
 
                // Create a new booking with status as "locked"
                Booking booking = new Booking();
@@ -60,15 +51,21 @@ public class BookingService {
      }
 
      public void scheduleRevertTask(long bookingId) {
+
           // Set a timer to revert the booking after the lock timeout
           Timer timer = new Timer();
           timer.schedule(new TimerTask() {
                @Override
                public void run() {
-                    Booking storedBooking = bookingRepo.findById(bookingId).orElse(null);
+                    Booking storedBooking = bookingRepo.findById(bookingId).get();
                     if (storedBooking != null && "locked".equals(storedBooking.getSeatStatus())) {
                          // Revert the booking
                          storedBooking.setSeatStatus("reverted");
+                         Show show = showRepo.getById(storedBooking.getSeatId());
+                         int newAvailableNoOfSeats = show.getSeatsAvailable() + storedBooking.getNumberOfSeatsBookedByUser();
+                         int newTotalBookedSeats = show.getSeatsBooked() - storedBooking.getNumberOfSeatsBookedByUser();
+                         showRepo.updateNoOfSeatsAvailableById(newAvailableNoOfSeats, show.getShowId());
+                         showRepo.updateNoOfBookedSeatsById(newTotalBookedSeats, show.getShowId());
                          bookingRepo.save(storedBooking);
                     }
                }
