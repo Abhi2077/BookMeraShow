@@ -1,73 +1,69 @@
-package com.BookMeraShow.BookMeraShow.Entities;
+package com.BookMeraShow.BookMeraShow.entities;
 
-import jakarta.persistence.Column;
+import java.util.Date;
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
-@Table(name = "movie_show")
+@Table(name = "shows")
 public class Show {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "show_id")
-	private int showId;
 
-     //ref to theatre
-     @Column(name = "theatre_id")
-     private int theatreId;
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
+     private Long id;
 
-     @Column(name = "seats_booked")
-     private int seatsBooked;
+     private Date showTime;
 
-     @Column(name = "seats_available")
-     private int seatsAvailabe;
+     private Integer capacity;
 
-     public void setShowId(int showId) {
-          this.showId = showId;
+     @OneToMany(mappedBy = "show")
+     private Set<Ticket> tickets;
+
+     @Version
+     private Integer version;
+
+     public void setTickets(Set<Ticket> tickets) {
+          this.tickets = tickets;
      }
 
-     public int getShowId() {
-          return showId;
+     public Set<Ticket> getTickets() {
+          return tickets;
      }
 
-     public void setTheatreId(int theatreId) {
-          this.theatreId = theatreId;
+     public void setShowId(Long id) {
+          this.id = id;
      }
 
-     public int getTheatreId() {
-          return theatreId;
+     public Long getShowId() {
+          return id;
      }
 
-     public void setSeatsBooked(int seatsBooked) {
-          this.seatsBooked = seatsBooked;
+     public void setShowTime(Date showTime) {
+          this.showTime = showTime;
      }
 
-     public int getSeatsBooked() {
-          return seatsBooked;
+     public Date getShowTime() {
+          return showTime;
+     }
+     
+     public void setShowCapacity(Integer capacity) {
+          this.capacity = capacity;
      }
 
-     public void setSeatsAvailable(int seatsAvailabe) {
-          this.seatsAvailabe = seatsAvailabe;
+     public Integer getShowCapacity() {
+          return capacity;
      }
 
-     public int getSeatsAvailable() {
-          return seatsAvailabe;
+     public void addTicket(Ticket ticket) {
+          ticket.setShow(this);
+          getTickets().add(ticket);
      }
-     public Show(int showId, int theatreId, int seatsAvailabe, int seatsBooked) {
-          this.showId = showId;
-          this.seatsAvailabe = seatsAvailabe;
-          this.seatsBooked = seatsBooked;
-          this.showId = showId;
-     }
-
-     public Show() {
-          super();
-     }
-
-    
-
 
 }
