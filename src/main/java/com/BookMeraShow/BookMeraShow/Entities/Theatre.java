@@ -2,6 +2,8 @@ package com.BookMeraShow.BookMeraShow.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,6 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "theatres")
 public class Theatre {
      
+     @JsonIgnore
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long theatreId;
@@ -23,6 +26,7 @@ public class Theatre {
 
      private Integer seatCapacity;
 
+     @JsonIgnore
      @OneToMany(mappedBy = "id")
      private List<Show> shows;
 
@@ -62,8 +66,8 @@ public class Theatre {
           return seatCapacity;
      }
 
-     public Theatre(Long id, String name, String location, Integer seatCapacity) {
-          this.theatreId = id;
+     public Theatre(Long theatreId, String name, String location, Integer seatCapacity) {
+          this.theatreId = theatreId;
           this.name = name;
           this.location = location;
           this.seatCapacity = seatCapacity;
@@ -73,4 +77,9 @@ public class Theatre {
           super();
      }
 
+     @Override
+     public String toString() {
+          String result = "theatreName : " + this.name + "\n" + "location : " + this.location + "\n" + "seatCapacity : " + this.seatCapacity;
+          return result;
+     }
 }
