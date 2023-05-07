@@ -7,7 +7,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
@@ -26,8 +29,24 @@ public class Show {
      @OneToMany(mappedBy = "show")
      private Set<Ticket> tickets;
 
+     @OneToOne()
+     @JoinColumn(name = "movieId")
+     private Movie movie;
+
+     @ManyToOne
+     @JoinColumn(name = "theatreId")
+     private Theatre theatre;
+
      @Version
      private Integer version;
+
+     public void setMovie(Movie movie) {
+          this.movie = movie;
+     }
+
+     public Movie getMovie() {
+          return movie;
+     }
 
      public void setTickets(Set<Ticket> tickets) {
           this.tickets = tickets;

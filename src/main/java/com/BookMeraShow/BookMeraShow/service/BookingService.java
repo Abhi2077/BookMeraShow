@@ -14,7 +14,7 @@ import com.BookMeraShow.BookMeraShow.exceptions.ExceededCapacityException;
 
 import jakarta.transaction.Transactional;
 
-@Service("booking_service")
+@Service
 public class BookingService {
 
      @Autowired
