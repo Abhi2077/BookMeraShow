@@ -1,7 +1,5 @@
 package com.BookMeraShow.BookMeraShow.dao;
 
-// import java.util.Optional;
-
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +21,8 @@ public interface ShowRepository extends CrudRepository<Show, Long> {
      @Modifying
      @Query(nativeQuery = true, value = "update shows s set s.capacity = :newAvailableNoOfSeats where s.id = :id")
      public void updateNoOfSeatsAvailableById(Integer newAvailableNoOfSeats, Long id);
+
+     @Query(nativeQuery = true, value = "select * from shows s where s.id =:showId")
+     public Show getShowById(Long showId);
+
 }

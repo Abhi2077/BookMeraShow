@@ -3,6 +3,8 @@ package com.BookMeraShow.BookMeraShow.entities;
 import java.util.Date;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,14 +20,17 @@ import jakarta.persistence.Version;
 @Table(name = "shows")
 public class Show {
 
+     @JsonIgnore
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Long id;
 
      private Date showTime;
 
+     @JsonIgnore
      private Integer capacity;
 
+     @JsonIgnore
      @OneToMany(mappedBy = "show")
      private Set<Ticket> tickets;
 
@@ -37,6 +42,7 @@ public class Show {
      @JoinColumn(name = "theatreId")
      private Theatre theatre;
 
+     @JsonIgnore
      @Version
      private Integer version;
 
@@ -83,6 +89,12 @@ public class Show {
      public void addTicket(Ticket ticket) {
           ticket.setShow(this);
           getTickets().add(ticket);
+     }
+
+     @Override
+     public String toString() {
+          String result = "showTime : " + this.showTime + "\n" + "movieId : " + this.movie + "\n" + "theareId : " + this.theatre;
+          return result;
      }
 
 }
