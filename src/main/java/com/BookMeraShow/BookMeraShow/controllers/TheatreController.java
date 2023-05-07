@@ -3,6 +3,7 @@ package com.BookMeraShow.BookMeraShow.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ public class TheatreController {
      @Autowired
      public TheatreService theatreService;
 
+     @PreAuthorize("hasRole('ADMIN')")
      @PostMapping("/theatre/addNewTheatre")
      public String addNewTheatre(@RequestBody Theatre theatre) {
           try {
@@ -30,6 +32,7 @@ public class TheatreController {
           return "theatre added successfully!!";
      }
 
+     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
      @GetMapping("/theatre/getTheatreById/{theatreId}")
      public String getTheatreById(@RequestParam Long theatreId) {
           Theatre theatre = theatreService.getTheatreById(theatreId);
@@ -39,11 +42,13 @@ public class TheatreController {
           return theatre.toString();
      }
 
+     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
      @GetMapping("/theatre/getAllTheatres")
      public List<Theatre> getAllTheatres() {
           return theatreService.getAllTheatres();
      }
 
+     @PreAuthorize("hasRole('ADMIN')")
      @DeleteMapping("/theatre/deleteTheatreById/{theatreId}")
      public String deleteThreatreById(@RequestParam Long theatreId) {
           Theatre theatre = theatreService.getTheatreById(theatreId);

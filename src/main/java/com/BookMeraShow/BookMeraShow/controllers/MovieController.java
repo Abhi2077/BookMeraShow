@@ -3,6 +3,7 @@ package com.BookMeraShow.BookMeraShow.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,14 @@ public class MovieController {
      @Autowired
      public MovieService movieService;
 
+     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
      @GetMapping("/movie/getAllMovies")
      public List<Movie> getAllMovies() {
           List<Movie> movieList = movieService.getAllMovies();
           return movieList;
      }
 
+     @PreAuthorize("hasRole('ADMIN')")
      @PostMapping("/movie/addNewMovie")
      public String addNewMovie(@RequestBody Movie movie) {
           try {
@@ -36,6 +39,7 @@ public class MovieController {
           return "success movie added";
      }
 
+     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
      @GetMapping("/movie/getMovieById/{movieId}")
      public String getMovieById(@RequestParam Long movieId) {
           Movie movie = movieService.getMovieById(movieId);
@@ -44,6 +48,7 @@ public class MovieController {
           return movie.toString();
      }
 
+     @PreAuthorize("hasRole('ADMIN')")
      @DeleteMapping("/movie/deleteMovieById/{movieId}")
      public String deleteMovieById(Long movieId) {
           if(movieService.getMovieById(movieId) == null)

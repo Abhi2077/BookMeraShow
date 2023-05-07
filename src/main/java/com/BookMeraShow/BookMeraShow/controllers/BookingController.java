@@ -1,6 +1,7 @@
 package com.BookMeraShow.BookMeraShow.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ public class BookingController {
      @Autowired
      public BookingService bookingService;
 
+     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
      @PostMapping("/booking/{showId}/{noOfSeatsToBeBooked}") 
      public String userBooking(@RequestParam Long showId, @RequestParam Integer noOfSeatsToBeBooked) {
 
