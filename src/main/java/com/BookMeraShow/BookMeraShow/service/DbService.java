@@ -22,14 +22,15 @@ public class DbService {
           this.ticketRepository = ticketRepository;
      }
 
-     private void saveNewTicket(String seatDetails, Show show) throws Exception {
+     private void saveNewTicket(Integer noOfSeatsBooked, Show show, String status) throws Exception {
           System.out.println("show capacity : " + show.getShowCapacity());
           System.out.println("tickets are : " + show.getTickets().size());
           if (show.getShowCapacity() <= show.getTickets().size()) {
                throw new ExceededCapacityException();
           }
           var ticket = new Ticket();
-          ticket.setSeatDetails(seatDetails);
+          ticket.setNoOfSeatsBooked(noOfSeatsBooked);
+          ticket.setStatus(status);
           show.addTicket(ticket);
           ticketRepository.save(ticket);
      }
@@ -37,16 +38,16 @@ public class DbService {
      @Transactional
      public void changeShow1() throws Exception {
           // the code of the first thread
-          var show = showRepository.findWithLockingById(1L).get();
-          saveNewTicket("Someseat", show);
+          var show = showRepository.findWithLockingById(1L);
+          saveNewTicket(1, show, "booked");
           Thread.sleep(1_000);
      }
 
      @Transactional
      public void changeShow2() throws Exception {
           // the code of the second thread
-          var show = showRepository.findWithLockingById(1L).get();
-          saveNewTicket("Brownseat", show);
+          var show = showRepository.findWithLockingById(1L);
+          saveNewTicket(1, show, "booked");
           Thread.sleep(1_000);
      }
 

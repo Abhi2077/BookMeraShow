@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+// import jakarta.persistence.criteria.CriteriaBuilder.In;
 
 @Entity
 @Table(name = "tickets")
@@ -21,7 +22,11 @@ public class Ticket {
      @JoinColumn(name = "show_id")
      private Show show;
 
-     private String seatDetails;
+     private Integer noOfSeatsBooked;
+
+     private String status;
+
+     // private String seatDetails;
 
      public void setTicketId(Long id) {
           this.id = id;
@@ -31,13 +36,29 @@ public class Ticket {
           return id;
      }
 
-     public void setSeatDetails(String seatDetails) {
-          this.seatDetails = seatDetails;
+     public void setNoOfSeatsBooked(Integer noOfSeatsBooked) {
+          this.noOfSeatsBooked = noOfSeatsBooked;
      }
 
-     public String getSeatDetails() {
-          return seatDetails;
+     public Integer getNoOfSeatsBooked() {
+          return noOfSeatsBooked;
      }
+
+     public void setStatus(String status) {
+          this.status = status;
+     }
+
+     public String getStatus() {
+          return status;
+     }
+
+     // public void setSeatDetails(String seatDetails) {
+     //      this.seatDetails = seatDetails;
+     // }
+
+     // public String getSeatDetails() {
+     //      return seatDetails;
+     // }
 
      public void setShow(Show show) {
           this.show = show;
@@ -45,5 +66,15 @@ public class Ticket {
 
      public Show getShow() {
           return show;
+     }
+
+     public Ticket(Long id, Integer noOfSeatsBooked, String status) {
+          this.id = id;
+          this.noOfSeatsBooked = noOfSeatsBooked;
+          this.status = status;
+     }
+
+     public Ticket() {
+          super();
      }
 }
