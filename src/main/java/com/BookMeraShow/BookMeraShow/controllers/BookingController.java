@@ -21,6 +21,7 @@ public class BookingController {
                bookingService.book(showId, noOfSeatsToBeBooked);
           } catch (ExceededCapacityException e) {
                e.printStackTrace();
+               return "no seats available";
           }
           return "success";
      }

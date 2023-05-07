@@ -3,14 +3,24 @@ package com.BookMeraShow.BookMeraShow.dao;
 // import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import com.BookMeraShow.BookMeraShow.entities.Show;
 
 import jakarta.persistence.LockModeType;
+import jakarta.transaction.Transactional;
 
 public interface ShowRepository extends CrudRepository<Show, Long> { 
 
      @Lock(LockModeType.PESSIMISTIC_FORCE_INCREMENT)
      Show findWithLockingById(Long id);
+
+     Show getById(Long id);
+
+     @Transactional
+     @Modifying
+     @Query(nativeQuery = true, value = "update shows s set s.capacity = :newAvailableNoOfSeats where s.id = :id")
+     public void updateNoOfSeatsAvailableById(Integer newAvailableNoOfSeats, Long id);
 }
