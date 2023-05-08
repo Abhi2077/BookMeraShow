@@ -19,7 +19,7 @@ public interface ShowRepository extends CrudRepository<Show, Long> {
 
      @Transactional
      @Modifying
-     @Query(nativeQuery = true, value = "update shows s set s.capacity = :newAvailableNoOfSeats where s.id = :id")
+     @Query(nativeQuery = true, value = "update shows s set s.no_of_available_seats = :newAvailableNoOfSeats where s.id = :id")
      public void updateNoOfSeatsAvailableById(Integer newAvailableNoOfSeats, Long id);
 
      @Query(nativeQuery = true, value = "select * from shows s where s.id =:showId")

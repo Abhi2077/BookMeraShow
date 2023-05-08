@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class Show {
      private Date showTime;
 
      @JsonIgnore
+     @Column(name = "no_of_available_seats")
      private Integer capacity;
 
      @JsonIgnore

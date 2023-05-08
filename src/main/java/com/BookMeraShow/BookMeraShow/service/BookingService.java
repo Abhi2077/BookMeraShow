@@ -66,4 +66,23 @@ public class BookingService {
                }
           }, LOCK_TIMEOUT_MINUTES * 60 * 1000);
      }
+
+     public Ticket getTicketById(Long ticketId) {
+          return ticketRepository.getTicketById(ticketId);
+     }
+
+     public void updateTicketStatusById(Long ticketId) {
+          ticketRepository.updateTicketStatusById(ticketId);
+     }
+
+     public void cancelTicketById(Long ticketId) {
+
+          Long showId = getTicketById(ticketId).getShow().getShowId();
+          Show show = showRepository.getShowById(showId);
+          System.out.println("show id is : " + show.getShowId());
+          System.out.println("show capcity is : " + show.getShowCapacity());
+          Integer newAvailableSeats = show.getShowCapacity() + getTicketById(ticketId).getNoOfSeatsBooked();
+          showRepository.updateNoOfSeatsAvailableById(newAvailableSeats, showId);
+          ticketRepository.updateTicketStatusCancel(ticketId);
+     }
 }
